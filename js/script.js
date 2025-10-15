@@ -1,14 +1,6 @@
 
 //Masks 
-
-$('#priceInput').maskMoney({
-    prefix: 'R$ ',
-    thousands: '.',
-    decimal: ',',
-    precision: 2
-})
-
-
+$('#priceInput').mask('000.000.000.000.000,00', { reverse: true });
 
 var products = [
     {
@@ -56,6 +48,28 @@ function loadProducts() {
     }
 }
 
+//Save a product
+function save() {
+
+    var prod = {
+        id: products.length + 1,
+        name: document.getElementById("nameInput").value,
+        description: document.getElementById("descInput").value,
+        price: document.getElementById("priceInput").value,
+        category: document.getElementById("selectCategory").value,
+        promotion: document.getElementById("checkboxPromotion").checked,
+        new: document.getElementById("checkboxNewProduct").checked
+    };
+
+    addNewRow(prod);
+
+    //Armazena o novo produto no array
+    products.push(prod);
+
+    //Limpa os dados do forms
+    document.getElementById("formProduct").reset();
+}
+
 //Add new row
 function addNewRow(prod) {
     var table = document.getElementById("productsTable");
@@ -75,13 +89,12 @@ function addNewRow(prod) {
     newRow.insertCell().appendChild(descNode);
 
     //Insert product price
-    var formatter = new Intl.NumberFormat('pt-br', {
+    var formatter = new Intl.NumberFormat('pt-BR', {
         style: 'currency',
         currency: 'BRL'
     });
 
     var priceNode = document.createTextNode(formatter.format(prod.price));
-
     newRow.insertCell().appendChild(priceNode);
 
     //Insert  product category
@@ -97,7 +110,7 @@ function addNewRow(prod) {
     var options = newRow.insertCell();
 
     if (prod.promotion)
-        options.innerHTML = "<span class='badge bg-success'>P</span>";
+        options.innerHTML = "<span class='badge bg-success me-1'>P</span>";
     if (prod.new)
-        options.innerHTML += "  <span class='badge bg-primary'>L</span>";
+        options.innerHTML += "<span class='badge bg-primary'>L</span>";
 }
