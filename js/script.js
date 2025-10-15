@@ -1,3 +1,15 @@
+
+//Masks 
+
+$('#priceInput').maskMoney({
+    prefix: 'R$ ',
+    thousands: '.',
+    decimal: ',',
+    precision: 2
+})
+
+
+
 var products = [
     {
         id: 1,
@@ -45,7 +57,7 @@ function loadProducts() {
 }
 
 //Add new row
-function addNewRow(prod){
+function addNewRow(prod) {
     var table = document.getElementById("productsTable");
 
     var newRow = table.insertRow();
@@ -63,7 +75,13 @@ function addNewRow(prod){
     newRow.insertCell().appendChild(descNode);
 
     //Insert product price
-    var priceNode = document.createTextNode(prod.price);
+    var formatter = new Intl.NumberFormat('pt-br', {
+        style: 'currency',
+        currency: 'BRL'
+    });
+
+    var priceNode = document.createTextNode(formatter.format(prod.price));
+
     newRow.insertCell().appendChild(priceNode);
 
     //Insert  product category
@@ -74,7 +92,7 @@ function addNewRow(prod){
         }
 
     newRow.insertCell().appendChild(categoryNode);
-    
+
     //Insert product options 
     var options = newRow.insertCell();
 
